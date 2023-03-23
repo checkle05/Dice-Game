@@ -1,0 +1,73 @@
+
+import random
+
+# Initialize the game
+player1_score = 0
+player2_score = 0
+player1_turn = True
+round_number = 1
+winner = None
+
+# Define the roll function
+def roll():
+    """
+    Roll a six-sided die and return the result.
+    """
+    return random.randint(1, 6)
+
+# Define the turn function
+def turn(player_score):
+    """
+    Play one turn and return the score for the turn.
+    """
+    score = 0
+    while True:
+        roll_result = roll()
+        if roll_result == 1:
+            print("You rolled a 1 and lost all points for this turn.")
+            score = 0
+            break
+        else:
+            score += roll_result
+            print("You rolled a {}.".format(roll_result))
+            print("Your score for this turn is {}.".format(score))
+            choice = input("Do you want to roll again? (y/n): ")
+            if choice.lower() != 'y':
+                break
+    return player_score + score
+
+# Play the game
+while True:
+    # Print the round number
+    print("Round {}".format(round_number))
+
+    # Get the player's name
+    if player1_turn:
+        player_name = "Player 1"
+    else:
+        player_name = "Player 2"
+
+    # Print the current score
+    print("{}'s score: {}".format(player_name, player1_score if player1_turn else player2_score))
+
+    # Play the turn
+    print("{}'s turn:".format(player_name))
+    if player1_turn:
+        player1_score = turn(player1_score)
+    else:
+        player2_score = turn(player2_score)
+
+    # Check if there is a winner
+    if player1_score >= 100:
+        winner = "Player 1"
+        break
+    elif player2_score >= 100:
+        winner = "Player 2"
+        break
+
+    # Switch to the other player
+    player1_turn = not player1_turn
+    round_number += 1
+
+# Print the winner
+print("The winner is {}!".format(winner))
